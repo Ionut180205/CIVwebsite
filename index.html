@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ioan-Viorel Cioarsa — Full-Stack Developer & AI Engineer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    :root {
+      --teal: #2dd4bf;
+      --violet: #7c3aed;
+      --bg: #050505;
+    }
+    * { box-sizing: border-box; }
+    body {
+      background-color: var(--bg);
+      color: #f8fafc;
+      font-family: 'Inter', system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+    /* Mesh gradient hero */
+    .mesh-gradient {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 40%, rgba(44,212,191,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 20%, rgba(124,58,237,0.22) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 50% 80%, rgba(44,212,191,0.10) 0%, transparent 60%);
+      animation: meshMove 12s ease-in-out infinite alternate;
+    }
+    @keyframes meshMove {
+      0%   { filter: blur(0px); transform: scale(1) rotate(0deg); }
+      50%  { filter: blur(2px); transform: scale(1.04) rotate(1deg); }
+      100% { filter: blur(0px); transform: scale(1) rotate(0deg); }
+    }
+    /* Floating particles */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.18;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0) scale(1); opacity: 0.18; }
+      50%  { opacity: 0.32; }
+      100% { transform: translateY(-120vh) scale(0.5); opacity: 0; }
+    }
+    /* Glassmorphism */
+    .glass {
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .glass-teal {
+      background: rgba(45,212,191,0.06);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(45,212,191,0.18);
+    }
+    /* Glow effects */
+    .glow-teal {
+      box-shadow: 0 0 24px rgba(45,212,191,0.35), 0 0 48px rgba(45,212,191,0.12);
+    }
+    .glow-violet {
+      box-shadow: 0 0 24px rgba(124,58,237,0.35), 0 0 48px rgba(124,58,237,0.12);
+    }
+    .text-teal { color: #2dd4bf; }
+    .text-violet { color: #7c3aed; }
+    .border-teal { border-color: rgba(45,212,191,0.4); }
+    /* Navbar */
+    .navbar-glass {
+      background: rgba(5,5,5,0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(45,212,191,0.12);
+    }
+    /* Terminal */
+    .terminal {
+      background: #0d0d0d;
+      border: 1px solid rgba(45,212,191,0.25);
+      border-radius: 12px;
+      font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+      font-size: 0.82rem;
+    }
+    .terminal-bar {
+      background: #1a1a1a;
+      border-bottom: 1px solid rgba(45,212,191,0.15);
+      border-radius: 12px 12px 0 0;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-red   { background: #ff5f57; }
+    .dot-yellow{ background: #febc2e; }
+    .dot-green { background: #28c840; }
+    .terminal-body { padding: 20px; min-height: 260px; }
+    .line-prompt { color: #2dd4bf; }
+    .line-cmd    { color: #f8fafc; }
+    .line-out    { color: #94a3b8; }
+    .line-success{ color: #4ade80; }
+    .line-ai     { color: #a78bfa; }
+    .cursor-blink {
+      display: inline-block;
+      width: 8px; height: 1em;
+      background: #2dd4bf;
+      animation: blink 1s step-end infinite;
+      vertical-align: text-bottom;
+      margin-left: 2px;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    /* Bento grid */
+    .bento-card {
+      border-radius: 16px;
+      padding: 24px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .bento-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 40px rgba(45,212,191,0.18);
+    }
+    /* Project card */
+    .project-card {
+      border-radius: 20px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .project-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 48px rgba(45,212,191,0.22);
+    }
+    /* Tag pill */
+    .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      background: rgba(45,212,191,0.1);
+      color: #2dd4bf;
+      border: 1px solid rgba(45,212,191,0.25);
+      margin: 2px;
+    }
+    .tag-violet {
+      background: rgba(124,58,237,0.12);
+      color: #a78bfa;
+      border-color: rgba(124,58,237,0.3);
+    }
+    /* Download button */
+    .btn-download {
+      background: linear-gradient(135deg, #2dd4bf 0%, #7c3aed 100%);
+      color: #050505;
+      font-weight: 700;
+      border-radius: 999px;
+      padding: 14px 36px;
+      transition: box-shadow 0.25s ease, transform 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-download:hover {
+      box-shadow: 0 0 32px rgba(45,212,191,0.55), 0 0 64px rgba(124,58,237,0.3);
+      transform: scale(1.04);
+    }
+    /* Section fade-in */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: rgba(45,212,191,0.35); border-radius: 3px; }
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #2dd4bf 0%, #a78bfa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    /* Skill bar */
+    .skill-bar-bg { background: rgba(255,255,255,0.07); border-radius: 999px; height: 6px; }
+    .skill-bar-fill { height: 6px; border-radius: 999px; background: linear-gradient(90deg, #2dd4bf, #7c3aed); }
+    /* Timeline */
+    .timeline-dot {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: #2dd4bf;
+      box-shadow: 0 0 10px rgba(45,212,191,0.6);
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+    .timeline-line {
+      width: 2px;
+      background: linear-gradient(to bottom, rgba(45,212,191,0.5), rgba(124,58,237,0.2));
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body x-data="portfolio()" x-init="init()">
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar-glass fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#hero" class="font-bold text-lg tracking-tight">
+      <span class="gradient-text">CIV</span>
+    </a>
+    <!-- Desktop nav -->
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+      <a href="#about"    class="hover:text-teal transition-colors">About</a>
+      <a href="#experience" class="hover:text-teal transition-colors">Experience</a>
+      <a href="#projects" class="hover:text-teal transition-colors">Projects</a>
+      <a href="#skills"   class="hover:text-teal transition-colors">Skills</a>
+      <a href="#contact"  class="hover:text-teal transition-colors">Contact</a>
+      <a href="./CV.pdf" download
+         class="px-4 py-2 rounded-full border border-teal text-teal text-xs font-semibold hover:bg-teal hover:text-black transition-all">
+        Download CV
+      </a>
+    </div>
+    <!-- Mobile hamburger -->
+    <button @click="mobileMenu = !mobileMenu" class="md:hidden text-slate-300 hover:text-teal transition-colors">
+      <i data-lucide="menu" class="w-6 h-6"></i>
+    </button>
+  </div>
+  <!-- Mobile menu -->
+  <div x-show="mobileMenu" x-transition class="md:hidden px-6 pb-4 flex flex-col gap-4 text-sm font-medium text-slate-300">
+    <a href="#about"      @click="mobileMenu=false" class="hover:text-teal transition-colors">About</a>
+    <a href="#experience" @click="mobileMenu=false" class="hover:text-teal transition-colors">Experience</a>
+    <a href="#projects"   @click="mobileMenu=false" class="hover:text-teal transition-colors">Projects</a>
+    <a href="#skills"     @click="mobileMenu=false" class="hover:text-teal transition-colors">Skills</a>
+    <a href="#contact"    @click="mobileMenu=false" class="hover:text-teal transition-colors">Contact</a>
+    <a href="./CV.pdf" download class="text-teal font-semibold">Download CV</a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
+  <!-- Mesh gradient -->
+  <div class="mesh-gradient"></div>
+  <!-- Particles -->
+  <div id="particles" class="absolute inset-0 pointer-events-none"></div>
+  <!-- Grid overlay -->
+  <div class="absolute inset-0 opacity-5"
+       style="background-image: linear-gradient(rgba(45,212,191,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(45,212,191,0.3) 1px, transparent 1px); background-size: 60px 60px;"></div>
+
+  <div class="relative z-10 max-w-5xl mx-auto px-6 text-center">
+    <!-- Badge -->
+    <div class="inline-flex items-center gap-2 glass-teal rounded-full px-4 py-2 text-xs font-semibold text-teal mb-8">
+      <span class="w-2 h-2 rounded-full bg-teal animate-pulse"></span>
+      Available for opportunities
+    </div>
+    <!-- Name -->
+    <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-4 leading-tight">
+      Ioan-Viorel<br/>
+      <span class="gradient-text">Cioarsa</span>
+    </h1>
+    <!-- Role -->
+    <p class="text-xl md:text-2xl text-slate-400 font-medium mb-6">
+      Full-Stack Developer &amp; AI Engineer
+    </p>
+    <!-- Tagline -->
+    <p class="max-w-2xl mx-auto text-slate-400 text-base md:text-lg leading-relaxed mb-10">
+      Specializing in the <span class="text-teal font-semibold">Laravel / TALL stack</span> and
+      <span class="text-violet font-semibold" style="color:#a78bfa">AI integration</span> —
+      from fine-tuning PyTorch models to deploying production SaaS on AWS.
+    </p>
+    <!-- CTA buttons -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="#projects"
+         class="px-8 py-3 rounded-full font-semibold text-sm glass-teal text-teal border border-teal hover:bg-teal hover:text-black transition-all glow-teal">
+        View Projects
+      </a>
+      <a href="#contact"
+         class="px-8 py-3 rounded-full font-semibold text-sm glass text-slate-300 hover:text-white hover:border-white transition-all">
+        Get in Touch
+      </a>
+    </div>
+    <!-- Scroll indicator -->
+    <div class="mt-20 flex justify-center animate-bounce">
+      <i data-lucide="chevrons-down" class="w-6 h-6 text-teal opacity-60"></i>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT / BENTO ===== -->
+<section id="about" class="py-24 px-6 max-w-6xl mx-auto fade-in">
+  <div class="text-center mb-16">
+    <span class="text-xs font-bold tracking-widest text-teal uppercase">About Me</span>
+    <h2 class="text-4xl md:text-5xl font-extrabold mt-3">
+      Building at the <span class="gradient-text">intersection</span><br/>of web &amp; AI
+    </h2>
+  </div>
+
+  <!-- Bento grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+    <!-- Bio card — spans 2 cols -->
+    <div class="bento-card glass md:col-span-2">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl glass-teal flex items-center justify-center">
+          <i data-lucide="user" class="w-5 h-5 text-teal"></i>
+        </div>
+        <span class="font-semibold text-slate-200">Who I Am</span>
+      </div>
+      <p class="text-slate-400 leading-relaxed text-sm md:text-base">
+        Dynamic Full-Stack Developer with a specialization in the <span class="text-teal font-semibold">Laravel/TALL stack</span> and AI.
+        Currently driving end-to-end development of scalable web applications, integrating complex payment systems
+        (<span class="text-teal">Stripe</span>) and managing cloud infrastructure via <span class="text-teal">AWS</span>.
+        Proven expertise in the AI lifecycle — from fine-tuning <span class="text-violet font-semibold" style="color:#a78bfa">PyTorch/MONAI</span>
+        models on remote GPUs to deploying production-ready AI tools. Focused on bridging the gap between
+        sophisticated machine learning and seamless user experiences.
+      </p>
+    </div>
+
+    <!-- Location card -->
+    <div class="bento-card glass">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl glass-teal flex items-center justify-center">
+          <i data-lucide="map-pin" class="w-5 h-5 text-teal"></i>
+        </div>
+        <span class="font-semibold text-slate-200">Location</span>
+      </div>
+      <p class="text-2xl font-bold text-white mb-1">Timisoara</p>
+      <p class="text-slate-400 text-sm">Romania 🇷🇴</p>
+      <div class="mt-4 pt-4 border-t border-white/5">
+        <p class="text-xs text-slate-500">Open to remote &amp; hybrid roles</p>
+      </div>
+    </div>
+
+    <!-- Stack card -->
+    <div class="bento-card glass-teal">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-teal/10 flex items-center justify-center">
+          <i data-lucide="layers" class="w-5 h-5 text-teal"></i>
+        </div>
+        <span class="font-semibold text-slate-200">Core Stack</span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag">PHP 8.x</span>
+        <span class="tag">Laravel</span>
+        <span class="tag">Livewire</span>
+        <span class="tag">Filament</span>
+        <span class="tag">Tailwind</span>
+        <span class="tag">Alpine.js</span>
+      </div>
+    </div>
+
+    <!-- AI card -->
+    <div class="bento-card" style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:16px;">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center">
+          <i data-lucide="brain" class="w-5 h-5" style="color:#a78bfa"></i>
+        </div>
+        <span class="font-semibold text-slate-200">AI / ML</span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag tag-violet">Python</span>
+        <span class="tag tag-violet">PyTorch</span>
+        <span class="tag tag-violet">MONAI</span>
+        <span class="tag tag-violet">TensorFlow</span>
+        <span class="tag tag-violet">Keras</span>
+        <span class="tag tag-violet">ResNet</span>
+        <span class="tag tag-violet">GradCam</span>
+        <span class="tag tag-violet">Streamlit</span>
+      </div>
+    </div>
+
+    <!-- Cloud card -->
+    <div class="bento-card glass">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-10 h-10 rounded-xl glass-teal flex items-center justify-center">
+          <i data-lucide="cloud" class="w-5 h-5 text-teal"></i>
+        </div>
+        <span class="font-semibold text-slate-200">Cloud &amp; Infra</span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag">AWS</span>
+        <span class="tag">Sevalla</span>
+        <span class="tag">Laravel Cloud</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== EXPERIENCE ===== -->
+<section id="experience" class="py-24 px-6 max-w-6xl mx-auto fade-in">
+  <div class="text-center mb-16">
+    <span class="text-xs font-bold tracking-widest text-teal uppercase">Career</span>
+    <h2 class="text-4xl md:text-5xl font-extrabold mt-3">
+      Work <span class="gradient-text">Experience</span>
+    </h2>
+  </div>
+
+  <div class="flex gap-6">
+    <!-- Timeline line -->
+    <div class="hidden md:flex flex-col items-center pt-2">
+      <div class="timeline-dot"></div>
+      <div class="timeline-line flex-1 mt-2"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="flex-1">
+      <div class="glass project-card p-8">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+          <div>
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-10 h-10 rounded-xl glass-teal flex items-center justify-center">
+                <i data-lucide="briefcase" class="w-5 h-5 text-teal"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white">Software Developer</h3>
+                <p class="text-teal font-semibold text-sm">Haufe Group</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col items-start md:items-end gap-1">
+            <span class="tag">01/07/2025 — Present</span>
+            <span class="text-slate-500 text-xs flex items-center gap-1">
+              <i data-lucide="map-pin" class="w-3 h-3"></i> Timisoara, Romania
+            </span>
+          </div>
+        </div>
+
+        <ul class="space-y-3 text-slate-400 text-sm leading-relaxed">
+          <li class="flex gap-3">
+            <span class="text-teal mt-1 flex-shrink-0">▸</span>
+            <span>Started as a practitioner and fullstack developer intern — completing tasks, helping the team, and evolving into a proactive contributor by identifying and refactoring code flows, accelerating sprint velocity, and bridging the gap between front-end reactivity and back-end performance.</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-teal mt-1 flex-shrink-0">▸</span>
+            <span>Developing and maintaining high-performance web applications using <span class="text-white font-medium">PHP 8.x, Laravel</span>, and the <span class="text-teal font-medium">TALL stack</span> (Tailwind, Alpine.js, Filament, Livewire).</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-teal mt-1 flex-shrink-0">▸</span>
+            <span>Building robust administrative interfaces using <span class="text-white font-medium">Filament</span> and optimizing complex database queries via <span class="text-white font-medium">Eloquent ORM</span> in MySQL.</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-teal mt-1 flex-shrink-0">▸</span>
+            <span>Managing version control and CI/CD pipelines across <span class="text-white font-medium">GitHub and GitLab</span>, with deployment focus on <span class="text-teal font-medium">AWS</span>.</span>
+          </li>
+          <li class="flex gap-3">
+            <span class="text-teal mt-1 flex-shrink-0">▸</span>
+            <span>Utilizing AI-native development workflows (<span class="text-violet font-medium" style="color:#a78bfa">Kiro, GitHub Copilot</span>) to increase code velocity and maintainability.</span>
+          </li>
+        </ul>
+
+        <div class="mt-6 flex flex-wrap gap-2">
+          <span class="tag">PHP 8.x</span>
+          <span class="tag">Laravel</span>
+          <span class="tag">Livewire</span>
+          <span class="tag">Filament</span>
+          <span class="tag">Alpine.js</span>
+          <span class="tag">Tailwind CSS</span>
+          <span class="tag">MySQL</span>
+          <span class="tag">AWS</span>
+          <span class="tag">GitHub</span>
+          <span class="tag">GitLab</span>
+          <span class="tag tag-violet">Kiro</span>
+          <span class="tag tag-violet">GitHub Copilot</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Education -->
+  <div class="mt-12 flex gap-6">
+    <div class="hidden md:flex flex-col items-center pt-2">
+      <div class="timeline-dot" style="background:#7c3aed;box-shadow:0 0 10px rgba(124,58,237,0.6);"></div>
+      <div class="timeline-line flex-1 mt-2" style="background:linear-gradient(to bottom,rgba(124,58,237,0.5),transparent);"></div>
+    </div>
+    <div class="flex-1">
+      <div class="project-card p-8" style="background:rgba(124,58,237,0.07);border:1px solid rgba(124,58,237,0.2);border-radius:20px;">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+          <div>
+            <div class="flex items-center gap-3 mb-2">
+              <div class="w-10 h-10 rounded-xl bg-violet-500/10 flex items-center justify-center">
+                <i data-lucide="graduation-cap" class="w-5 h-5" style="color:#a78bfa"></i>
+              </div>
+              <div>
+                <h3 class="text-xl font-bold text-white">Bachelor in Computer Science</h3>
+                <p class="font-semibold text-sm" style="color:#a78bfa">West University of Timisoara</p>
+              </div>
+            </div>
+          </div>
+          <div class="flex flex-col items-start md:items-end gap-1">
+            <span class="tag tag-violet">09/2023 — Present</span>
+            <span class="text-slate-500 text-xs">Thesis: Medical AI Research</span>
+          </div>
+        </div>
+        <ul class="space-y-3 text-slate-400 text-sm leading-relaxed">
+          <li class="flex gap-3">
+            <span style="color:#a78bfa" class="mt-1 flex-shrink-0">▸</span>
+            <span>Developed and fine-tuned deep learning models for medical imaging using <span class="text-white font-medium">MONAI, PyTorch, and TensorFlow/Keras</span>.</span>
+          </li>
+          <li class="flex gap-3">
+            <span style="color:#a78bfa" class="mt-1 flex-shrink-0">▸</span>
+            <span>Managed high-compute workloads for model training using <span class="text-white font-medium">Runpod and Kaggle</span> for GPU orchestration.</span>
+          </li>
+          <li class="flex gap-3">
+            <span style="color:#a78bfa" class="mt-1 flex-shrink-0">▸</span>
+            <span>Built interactive data-driven dashboards for model visualization using <span class="text-white font-medium">Streamlit and Pandas</span>.</span>
+          </li>
+        </ul>
+        <div class="mt-6 flex flex-wrap gap-2">
+          <span class="tag tag-violet">PyTorch</span>
+          <span class="tag tag-violet">MONAI</span>
+          <span class="tag tag-violet">TensorFlow</span>
+          <span class="tag tag-violet">Keras</span>
+          <span class="tag tag-violet">Streamlit</span>
+          <span class="tag tag-violet">Pandas</span>
+          <span class="tag tag-violet">Runpod</span>
+          <span class="tag tag-violet">Kaggle</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section id="projects" class="py-24 px-6 max-w-6xl mx-auto fade-in">
+  <div class="text-center mb-16">
+    <span class="text-xs font-bold tracking-widest text-teal uppercase">Portfolio</span>
+    <h2 class="text-4xl md:text-5xl font-extrabold mt-3">
+      Featured <span class="gradient-text">Projects</span>
+    </h2>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+    <!-- Project 1: Numora -->
+    <div class="project-card glass p-8 flex flex-col">
+      <div class="flex items-start justify-between mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl glass-teal flex items-center justify-center glow-teal">
+            <i data-lucide="zap" class="w-6 h-6 text-teal"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">Numora</h3>
+            <span class="text-xs text-teal font-semibold">SaaS Platform</span>
+          </div>
+        </div>
+        <span class="tag">Production</span>
+      </div>
+
+      <ul class="space-y-3 text-slate-400 text-sm leading-relaxed flex-1 mb-6">
+        <li class="flex gap-3">
+          <span class="text-teal mt-1 flex-shrink-0">▸</span>
+          <span>Architected and deployed a scalable <span class="text-white font-medium">AI-driven SaaS</span> using Laravel, Livewire, and Tailwind CSS, featuring a custom credit-based monetization system.</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="text-teal mt-1 flex-shrink-0">▸</span>
+          <span>Implemented robust <span class="text-white font-medium">AWS infrastructure</span> utilizing Elastic Beanstalk (orchestration), RDS (PostgreSQL/MySQL), ALB (load balancing), and SES (transactional mail).</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="text-teal mt-1 flex-shrink-0">▸</span>
+          <span>Integrated <span class="text-white font-medium">Amazon Bedrock</span> to orchestrate high-performance LLM inferences directly into the application workflow.</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="text-teal mt-1 flex-shrink-0">▸</span>
+          <span>Engineered a seamless billing engine using <span class="text-white font-medium">Stripe and Laravel Cashier</span>, managing complex credit-deduction logic and automated invoicing.</span>
+        </li>
+        <li class="flex gap-3">
+          <span class="text-teal mt-1 flex-shrink-0">▸</span>
+          <span>Established a <span class="text-white font-medium">CI/CD pipeline</span> from GitHub to AWS, ensuring zero-downtime deployments and automated environment staging.</span>
+        </li>
+      </ul>
+
+      <div class="flex flex-wrap gap-1.5">
+        <span class="tag">Laravel</span>
+        <span class="tag">Livewire</span>
+        <span class="tag">Tailwind CSS</span>
+        <span class="tag">Alpine.js</span>
+        <span class="tag">AWS EB</span>
+        <span class="tag">RDS</span>
+        <span class="tag">SES</span>
+        <span class="tag">Bedrock</span>
+        <span class="tag">Stripe</span>
+        <span class="tag">PostgreSQL</span>
+        <span class="tag">CI/CD</span>
+      </div>
+    </div>
+
+    <!-- Project 2: Medical AI -->
+    <div class="project-card p-8 flex flex-col" style="background:rgba(124,58,237,0.07);border:1px solid rgba(124,58,237,0.2);border-radius:20px;">
+      <div class="flex items-start justify-between mb-6">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-violet-500/10 flex items-center justify-center glow-violet">
+            <i data-lucide="scan-line" class="w-6 h-6" style="color:#a78bfa"></i>
+          </div>
+          <div>
+            <h3 class="text-xl font-bold text-white">Medical AI Diagnostics</h3>
+            <span class="text-xs font-semibold" style="color:#a78bfa">Bachelor Thesis</span>
+          </div>
+        </div>
+        <span class="tag tag-violet">Research</span>
+      </div>
+
+      <ul class="space-y-3 text-slate-400 text-sm leading-relaxed flex-1 mb-6">
+        <li class="flex gap-3">
+          <span style="color:#a78bfa" class="mt-1 flex-shrink-0">▸</span>
+          <span>Fine-tuned a <span class="text-white font-medium">ResNet architecture</span> using PyTorch for clinical diagnostics in medical imaging.</span>
+        </li>
+        <li class="flex gap-3">
+          <span style="color:#a78bfa" class="mt-1 flex-shrink-0">▸</span>
+          <span>Utilized <span class="text-white font-medium">Pandas</span> for dataset cleaning and <span class="text-white font-medium">Streamlit</span> for the initial researcher-facing MVP.</span>
+        </li>
+        <li class="flex gap-3">
+          <span style="color:#a78bfa" class="mt-1 flex-shrink-0">▸</span>
+          <span>Developing <span class="text-white font-medium">heatmap visualization with GradCam</span> and improvements to the base AI identifiers for enhanced clinical interpretability.</span>
+        </li>
+        <li class="flex gap-3">
+          <span style="color:#a78bfa" class="mt-1 flex-shrink-0">▸</span>
+          <span>Managed GPU-intensive training workloads on <span class="text-white font-medium">Runpod and Kaggle</span> for scalable model iteration.</span>
+        </li>
+      </ul>
+
+      <div class="flex flex-wrap gap-1.5">
+        <span class="tag tag-violet">PyTorch</span>
+        <span class="tag tag-violet">MONAI</span>
+        <span class="tag tag-violet">TensorFlow</span>
+        <span class="tag tag-violet">Keras</span>
+        <span class="tag tag-violet">ResNet</span>
+        <span class="tag tag-violet">GradCam</span>
+        <span class="tag tag-violet">Pandas</span>
+        <span class="tag tag-violet">Streamlit</span>
+        <span class="tag tag-violet">Runpod</span>
+        <span class="tag tag-violet">Kaggle</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== AI-NATIVE WORKFLOW TERMINAL ===== -->
+<section id="ai-workflow" class="py-24 px-6 max-w-6xl mx-auto fade-in">
+  <div class="text-center mb-16">
+    <span class="text-xs font-bold tracking-widest text-teal uppercase">AI-Native Development</span>
+    <h2 class="text-4xl md:text-5xl font-extrabold mt-3">
+      The <span class="gradient-text">AI Workflow</span>
+    </h2>
+    <p class="text-slate-400 mt-4 max-w-xl mx-auto text-sm">
+      Leveraging cutting-edge AI tools to ship faster, write cleaner code, and solve harder problems.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+
+    <!-- Terminal component -->
+    <div class="terminal glow-teal" x-data="terminalAnim()" x-init="startTyping()">
+      <div class="terminal-bar">
+        <span class="dot dot-red"></span>
+        <span class="dot dot-yellow"></span>
+        <span class="dot dot-green"></span>
+        <span class="ml-4 text-slate-500 text-xs">ai-workflow ~ kiro-session</span>
+      </div>
+      <div class="terminal-body">
+        <template x-for="(line, i) in visibleLines" :key="i">
+          <div class="mb-1">
+            <span x-show="line.type === 'prompt'" class="line-prompt">❯ </span>
+            <span :class="{
+              'line-cmd':     line.type === 'prompt',
+              'line-out':     line.type === 'output',
+              'line-success': line.type === 'success',
+              'line-ai':      line.type === 'ai'
+            }" x-text="line.text"></span>
+          </div>
+        </template>
+        <span x-show="showCursor" class="cursor-blink"></span>
+      </div>
+    </div>
+
+    <!-- AI tools grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+      <div class="bento-card glass-teal">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-9 h-9 rounded-xl bg-teal/10 flex items-center justify-center">
+            <i data-lucide="bot" class="w-5 h-5 text-teal"></i>
+          </div>
+          <span class="font-bold text-white text-sm">Kiro</span>
+        </div>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          AI-native IDE for spec-driven development. Used daily at Haufe Group for accelerating feature delivery and maintaining code quality.
+        </p>
+      </div>
+
+      <div class="bento-card" style="background:rgba(124,58,237,0.08);border:1px solid rgba(124,58,237,0.2);border-radius:16px;">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-9 h-9 rounded-xl bg-violet-500/10 flex items-center justify-center">
+            <i data-lucide="code-2" class="w-5 h-5" style="color:#a78bfa"></i>
+          </div>
+          <span class="font-bold text-white text-sm">GitHub Copilot</span>
+        </div>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          Inline AI pair-programming for rapid boilerplate generation, test scaffolding, and intelligent code completion across the TALL stack.
+        </p>
+      </div>
+
+      <div class="bento-card glass">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-9 h-9 rounded-xl glass-teal flex items-center justify-center">
+            <i data-lucide="terminal" class="w-5 h-5 text-teal"></i>
+          </div>
+          <span class="font-bold text-white text-sm">Claude Code</span>
+        </div>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          Agentic coding assistant for complex refactors, architecture decisions, and multi-file changes with deep codebase understanding.
+        </p>
+      </div>
+
+      <div class="bento-card glass">
+        <div class="flex items-center gap-3 mb-3">
+          <div class="w-9 h-9 rounded-xl glass-teal flex items-center justify-center">
+            <i data-lucide="mouse-pointer-2" class="w-5 h-5 text-teal"></i>
+          </div>
+          <span class="font-bold text-white text-sm">Cursor</span>
+        </div>
+        <p class="text-slate-400 text-xs leading-relaxed">
+          AI-first code editor for context-aware completions, natural language edits, and seamless integration with the full development workflow.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills" class="py-24 px-6 max-w-6xl mx-auto fade-in">
+  <div class="text-center mb-16">
+    <span class="text-xs font-bold tracking-widest text-teal uppercase">Expertise</span>
+    <h2 class="text-4xl md:text-5xl font-extrabold mt-3">
+      Skills &amp; <span class="gradient-text">Tech Stack</span>
+    </h2>
+  </div>
+
+  <!-- Bento skills grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+
+    <!-- Development -->
+    <div class="bento-card glass lg:col-span-2">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-9 h-9 rounded-xl glass-teal flex items-center justify-center">
+          <i data-lucide="code" class="w-4 h-4 text-teal"></i>
+        </div>
+        <span class="font-bold text-white">Development</span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag">PHP 8.x</span>
+        <span class="tag">Laravel</span>
+        <span class="tag">Livewire</span>
+        <span class="tag">Filament</span>
+        <span class="tag">Alpine.js</span>
+        <span class="tag">Tailwind CSS</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">HTML5 / CSS3</span>
+        <span class="tag">Stripe</span>
+        <span class="tag">Laravel Cashier</span>
+      </div>
+    </div>
+
+    <!-- AI/ML -->
+    <div class="bento-card lg:col-span-2" style="background:rgba(124,58,237,0.07);border:1px solid rgba(124,58,237,0.2);border-radius:16px;">
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-9 h-9 rounded-xl bg-violet-500/10 flex items-center justify-center">
+          <i data-lucide="cpu" class="w-4 h-4" style="color:#a78bfa"></i>
+        </div>
+        <span class="font-bold text-white">AI / Machine Learning</span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag tag-violet">Python</span>
+        <span class="tag tag-violet">Streamlit</span>
+        <span class="tag tag-violet">Pandas</span>
+        <span class="tag tag-violet">PyTorch</span>
+        <span class="tag tag-violet">MONAI</span>
+        <span class="tag tag-violet">TensorFlow</span>
+        <span class="tag tag-violet">Keras</span>
+        <span class="tag tag-violet">ResNet</span>
+        <span class="tag tag-violet">GradCam</span>
+        <span class="tag tag-violet">Model Fine-tuning</span>
+        <span class="tag tag-violet">GPU Orchestration</span>
+        <span class="tag tag-violet">Amazon Bedrock</span>
+        <span class="tag tag-violet">LLM Integration</span>
+        <span class="tag tag-violet">Runpod</span>
+        <span class="tag tag-violet">Kaggle</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Infrastructure row -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+    <div class="bento-card glass-teal">
+      <div class="flex items-center gap-3 mb-4">
+        <i data-lucide="database" class="w-5 h-5 text-teal"></i>
+        <span class="font-bold text-white text-sm">Databases</span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag">PostgreSQL</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">Eloquent ORM</span>
+      </div>
+    </div>
+
+    <div class="bento-card glass">
+      <div class="flex items-center gap-3 mb-4">
+        <i data-lucide="git-branch" class="w-5 h-5 text-teal"></i>
+        <span class="font-bold text-white text-sm">DevOps &amp; Version Control</span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag">Git</span>
+        <span class="tag">GitHub</span>
+        <span class="tag">GitLab</span>
+        <span class="tag">CI/CD</span>
+        <span class="tag">Terraform</span>
+      </div>
+    </div>
+
+    <div class="bento-card glass">
+      <div class="flex items-center gap-3 mb-4">
+        <i data-lucide="server" class="w-5 h-5 text-teal"></i>
+        <span class="font-bold text-white text-sm">Cloud Platforms</span>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag">AWS</span>
+        <span class="tag">Laravel Cloud</span>
+        <span class="tag">Sevalla</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== AI EDGE SECTION ===== -->
+<section id="ai-edge" class="py-24 px-6 max-w-6xl mx-auto fade-in">
+  <div class="relative rounded-3xl overflow-hidden p-10 md:p-16"
+       style="background:linear-gradient(135deg,rgba(45,212,191,0.08) 0%,rgba(124,58,237,0.12) 100%);border:1px solid rgba(45,212,191,0.18);">
+    <!-- Background glow -->
+    <div class="absolute -top-20 -right-20 w-80 h-80 rounded-full opacity-20"
+         style="background:radial-gradient(circle,#7c3aed,transparent 70%);"></div>
+    <div class="absolute -bottom-20 -left-20 w-80 h-80 rounded-full opacity-15"
+         style="background:radial-gradient(circle,#2dd4bf,transparent 70%);"></div>
+
+    <div class="relative z-10 text-center max-w-3xl mx-auto">
+      <div class="inline-flex items-center gap-2 glass-teal rounded-full px-4 py-2 text-xs font-semibold text-teal mb-8">
+        <i data-lucide="sparkles" class="w-4 h-4"></i>
+        The AI Advantage
+      </div>
+      <h2 class="text-4xl md:text-5xl font-extrabold mb-6">
+        Coding at the <span class="gradient-text">speed of thought</span>
+      </h2>
+      <p class="text-slate-400 leading-relaxed mb-10 text-base md:text-lg">
+        I don't just use AI tools — I integrate them into every layer of the development lifecycle.
+        From spec-driven planning in <span class="text-teal font-semibold">Kiro</span> to agentic refactoring with
+        <span class="text-teal font-semibold">Claude Code</span>, AI amplifies output without sacrificing quality.
+        The result: faster sprints, cleaner architecture, and production systems that scale.
+      </p>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        <div class="glass rounded-2xl p-4">
+          <div class="text-3xl font-extrabold gradient-text mb-1">4x</div>
+          <div class="text-xs text-slate-400">Faster feature delivery</div>
+        </div>
+        <div class="glass rounded-2xl p-4">
+          <div class="text-3xl font-extrabold gradient-text mb-1">AI</div>
+          <div class="text-xs text-slate-400">Native workflow daily</div>
+        </div>
+        <div class="glass rounded-2xl p-4">
+          <div class="text-3xl font-extrabold gradient-text mb-1">0</div>
+          <div class="text-xs text-slate-400">Downtime deployments</div>
+        </div>
+        <div class="glass rounded-2xl p-4">
+          <div class="text-3xl font-extrabold gradient-text mb-1">∞</div>
+          <div class="text-xs text-slate-400">Curiosity &amp; drive</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact" class="py-24 px-6 max-w-4xl mx-auto fade-in">
+  <div class="text-center mb-16">
+    <span class="text-xs font-bold tracking-widest text-teal uppercase">Let's Connect</span>
+    <h2 class="text-4xl md:text-5xl font-extrabold mt-3">
+      Get in <span class="gradient-text">Touch</span>
+    </h2>
+    <p class="text-slate-400 mt-4 max-w-lg mx-auto text-sm">
+      Open to new opportunities, collaborations, and interesting conversations about web development and AI.
+    </p>
+  </div>
+
+  <div class="glass rounded-3xl p-8 md:p-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+
+      <!-- Email -->
+      <a href="mailto:ionut.cioarsa@gmail.com"
+         class="flex items-center gap-4 glass-teal rounded-2xl p-5 hover:glow-teal transition-all group">
+        <div class="w-12 h-12 rounded-xl glass-teal flex items-center justify-center flex-shrink-0">
+          <i data-lucide="mail" class="w-6 h-6 text-teal"></i>
+        </div>
+        <div>
+          <p class="text-xs text-slate-500 mb-1">Email</p>
+          <p class="text-white font-semibold text-sm group-hover:text-teal transition-colors">ionut.cioarsa@gmail.com</p>
+        </div>
+      </a>
+
+      <!-- Phone -->
+      <a href="tel:+40748392866"
+         class="flex items-center gap-4 glass rounded-2xl p-5 hover:border-teal transition-all group" style="border:1px solid rgba(255,255,255,0.08);">
+        <div class="w-12 h-12 rounded-xl glass-teal flex items-center justify-center flex-shrink-0">
+          <i data-lucide="phone" class="w-6 h-6 text-teal"></i>
+        </div>
+        <div>
+          <p class="text-xs text-slate-500 mb-1">Phone</p>
+          <p class="text-white font-semibold text-sm group-hover:text-teal transition-colors">(+40) 748 392 866</p>
+        </div>
+      </a>
+
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/in/ioan-cioarsa" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-4 glass rounded-2xl p-5 hover:border-teal transition-all group" style="border:1px solid rgba(255,255,255,0.08);">
+        <div class="w-12 h-12 rounded-xl glass-teal flex items-center justify-center flex-shrink-0">
+          <i data-lucide="linkedin" class="w-6 h-6 text-teal"></i>
+        </div>
+        <div>
+          <p class="text-xs text-slate-500 mb-1">LinkedIn</p>
+          <p class="text-white font-semibold text-sm group-hover:text-teal transition-colors">Ioan Cioarsa</p>
+        </div>
+      </a>
+
+      <!-- GitHub -->
+      <a href="https://github.com/Ionut180205" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-4 glass rounded-2xl p-5 hover:border-teal transition-all group" style="border:1px solid rgba(255,255,255,0.08);">
+        <div class="w-12 h-12 rounded-xl glass-teal flex items-center justify-center flex-shrink-0">
+          <i data-lucide="github" class="w-6 h-6 text-teal"></i>
+        </div>
+        <div>
+          <p class="text-xs text-slate-500 mb-1">GitHub</p>
+          <p class="text-white font-semibold text-sm group-hover:text-teal transition-colors">Ionut180205</p>
+        </div>
+      </a>
+
+    </div>
+
+    <!-- Download CV button -->
+    <div class="text-center">
+      <a href="./CV.pdf" download class="btn-download">
+        <i data-lucide="download" class="w-5 h-5"></i>
+        Download CV
+      </a>
+      <p class="text-slate-600 text-xs mt-4">PDF format · Always up to date</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="border-t border-white/5 py-10 px-6 text-center">
+  <p class="text-slate-600 text-sm">
+    &copy; 2025 Ioan-Viorel Cioarsa · Built with
+    <span class="text-teal">Laravel/TALL</span> spirit &amp;
+    <span style="color:#a78bfa">AI</span> assistance ·
+    Timisoara, Romania
+  </p>
+  <div class="flex justify-center gap-6 mt-4">
+    <a href="https://www.linkedin.com/in/ioan-cioarsa" target="_blank" rel="noopener noreferrer"
+       class="text-slate-600 hover:text-teal transition-colors">
+      <i data-lucide="linkedin" class="w-4 h-4"></i>
+    </a>
+    <a href="https://github.com/Ionut180205" target="_blank" rel="noopener noreferrer"
+       class="text-slate-600 hover:text-teal transition-colors">
+      <i data-lucide="github" class="w-4 h-4"></i>
+    </a>
+    <a href="mailto:ionut.cioarsa@gmail.com"
+       class="text-slate-600 hover:text-teal transition-colors">
+      <i data-lucide="mail" class="w-4 h-4"></i>
+    </a>
+  </div>
+</footer>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+  // Initialize Lucide icons
+  lucide.createIcons();
+
+  // Alpine.js portfolio component
+  function portfolio() {
+    return {
+      mobileMenu: false,
+      init() {
+        this.createParticles();
+        this.observeFadeIns();
+      },
+      createParticles() {
+        const container = document.getElementById('particles');
+        if (!container) return;
+        const colors = ['#2dd4bf', '#7c3aed', '#a78bfa', '#5eead4'];
+        for (let i = 0; i < 28; i++) {
+          const p = document.createElement('div');
+          p.className = 'particle';
+          const size = Math.random() * 6 + 2;
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          const left = Math.random() * 100;
+          const delay = Math.random() * 18;
+          const duration = Math.random() * 14 + 10;
+          p.style.cssText = `
+            width:${size}px;height:${size}px;
+            background:${color};
+            left:${left}%;
+            bottom:-10px;
+            animation-delay:${delay}s;
+            animation-duration:${duration}s;
+          `;
+          container.appendChild(p);
+        }
+      },
+      observeFadeIns() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+      }
+    };
+  }
+
+  // Terminal animation component
+  function terminalAnim() {
+    return {
+      visibleLines: [],
+      showCursor: true,
+      allLines: [
+        { type: 'prompt', text: 'kiro spec --feature "user-auth-flow"' },
+        { type: 'ai',     text: '✦ Kiro: Analyzing codebase context...' },
+        { type: 'output', text: '  → Found 12 related files in src/' },
+        { type: 'output', text: '  → Generating requirements.md...' },
+        { type: 'success',text: '  ✓ Spec created: .kiro/specs/user-auth-flow/' },
+        { type: 'prompt', text: 'kiro task --execute "implement login"' },
+        { type: 'ai',     text: '✦ Kiro: Reading spec & planning tasks...' },
+        { type: 'output', text: '  → Writing AuthController.php' },
+        { type: 'output', text: '  → Writing LoginForm.php (Livewire)' },
+        { type: 'output', text: '  → Updating routes/web.php' },
+        { type: 'success',text: '  ✓ 3 files written, 0 errors' },
+        { type: 'prompt', text: 'gh copilot suggest "optimize this query"' },
+        { type: 'ai',     text: '✦ Copilot: Suggesting eager loading fix...' },
+        { type: 'success',text: '  ✓ N+1 query resolved — 94% faster' },
+        { type: 'prompt', text: 'claude "refactor payment service"' },
+        { type: 'ai',     text: '✦ Claude: Analyzing Stripe integration...' },
+        { type: 'output', text: '  → Extracting PaymentService class' },
+        { type: 'success',text: '  ✓ Refactor complete — tests passing' },
+      ],
+      startTyping() {
+        let i = 0;
+        const addLine = () => {
+          if (i < this.allLines.length) {
+            this.visibleLines.push(this.allLines[i]);
+            i++;
+            const delay = this.allLines[i - 1].type === 'prompt' ? 900 : 320;
+            setTimeout(addLine, delay);
+          } else {
+            // Loop after pause
+            setTimeout(() => {
+              this.visibleLines = [];
+              i = 0;
+              addLine();
+            }, 3500);
+          }
+        };
+        setTimeout(addLine, 600);
+      }
+    };
+  }
+</script>
+</body>
+</html>
