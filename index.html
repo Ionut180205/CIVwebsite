@@ -930,30 +930,38 @@
     canvas.parentElement.appendChild(tooltip);
 
     // ── Hub definitions ───────────────────────────────────────────────────────
-    // Hubs placed in a triangle: Web left, AI top-right, Infra bottom-right
+    // Hubs placed in a diamond: Web left, AI top, Cloud right, Databases bottom
     const HUBS = [
       {
         id: 'web', label: 'Web Dev', color: '#2dd4bf',
-        px: 0.25, py: 0.55,
+        px: 0.22, py: 0.50,
         floatAmpX: 18, floatAmpY: 14, floatSpeedX: 0.31, floatSpeedY: 0.23,
         satellites: [
-          'Laravel', 'PHP 8.x', 'Livewire', 'Filament', 'Alpine.js', 'Tailwind', 'Stripe',
+          'Laravel', 'PHP 8.x', 'Livewire', 'Filament', 'Alpine.js', 'Tailwind CSS', 'JavaScript', 'HTML5/CSS3', 'Stripe', 'Laravel Cashier',
         ],
       },
       {
         id: 'ai', label: 'AI / ML', color: '#a78bfa',
-        px: 0.72, py: 0.28,
+        px: 0.55, py: 0.22,
         floatAmpX: 14, floatAmpY: 20, floatSpeedX: 0.27, floatSpeedY: 0.35,
         satellites: [
-          'Python', 'PyTorch', 'TensorFlow', 'MONAI', 'GradCam', 'Streamlit',
+          'Python', 'PyTorch', 'TensorFlow', 'MONAI', 'Keras', 'ResNet', 'GradCam', 'Streamlit', 'Pandas', 'Bedrock', 'LLM Integration', 'Runpod', 'Kaggle',
         ],
       },
       {
-        id: 'infra', label: 'Infrastructure', color: '#38bdf8',
-        px: 0.72, py: 0.78,
+        id: 'cloud', label: 'Cloud & DevOps', color: '#38bdf8',
+        px: 0.80, py: 0.50,
         floatAmpX: 20, floatAmpY: 12, floatSpeedX: 0.19, floatSpeedY: 0.29,
         satellites: [
-          'AWS', 'CI/CD', 'Terraform', 'PostgreSQL', 'Git/GitHub',
+          'AWS', 'CI/CD', 'Terraform', 'Git', 'GitHub', 'GitLab', 'Laravel Cloud', 'Sevalla',
+        ],
+      },
+      {
+        id: 'db', label: 'Databases', color: '#fb923c',
+        px: 0.55, py: 0.80,
+        floatAmpX: 16, floatAmpY: 10, floatSpeedX: 0.24, floatSpeedY: 0.18,
+        satellites: [
+          'PostgreSQL', 'MySQL', 'Eloquent ORM',
         ],
       },
     ];
@@ -1111,7 +1119,8 @@
       });
 
       // ── Hub–hub connections ───────────────────────────────────────────────
-      const hubPairs = [[0,1],[1,2],[0,2]];
+      // Diamond: Web–AI, AI–Cloud, Cloud–DB, DB–Web, plus cross connections
+      const hubPairs = [[0,1],[1,2],[2,3],[3,0],[0,2],[1,3]];
       hubPairs.forEach(([i,j]) => {
         const a = hubs[i], b = hubs[j];
         const isHov = (a === hoveredHub || b === hoveredHub);
